@@ -21,7 +21,9 @@ namespace StockMaster
             this.Text = "Inventory Management";
             this.Size = new Size(800, 500);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+            this.MaximizeBox = true;
+            this.WindowState = FormWindowState.Maximized; 
+
 
             TableLayoutPanel layout = new TableLayoutPanel
             {

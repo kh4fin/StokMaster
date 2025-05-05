@@ -11,7 +11,7 @@ namespace StockMaster
         public FormProduct()
         {
             SetupUI();
-            LoadData(); // Load from database
+            LoadData(); 
         }
 
         private void SetupUI()
@@ -19,7 +19,8 @@ namespace StockMaster
             this.Text = "Product Management";
             this.Size = new Size(700, 500);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+            this.MaximizeBox = true;
+            this.WindowState = FormWindowState.Maximized; 
 
             TableLayoutPanel layout = new TableLayoutPanel
             {

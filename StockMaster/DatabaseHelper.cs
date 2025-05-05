@@ -208,6 +208,9 @@ public class DatabaseHelper
         }
     }
 
+    // ==== Model Join ====
+    
+
     // ==== Model Classes ====
 
     public class Product
