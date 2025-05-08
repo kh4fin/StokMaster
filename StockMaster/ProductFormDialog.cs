@@ -10,10 +10,6 @@ namespace StockMaster
         private TextBox? txtName, txtQuantity, txtPrice;
         private Button? btnSave;
 
-        // [Browsable(false)]
-        // [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        // public string? ProductId { get; set; }
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? NameProduct { get; set; }
@@ -51,9 +47,6 @@ namespace StockMaster
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
             this.Controls.Add(layout);
 
-            // layout.Controls.Add(new Label { Text = "ID", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 0);
-            // txtId = new TextBox { Dock = DockStyle.Fill };
-            // layout.Controls.Add(txtId, 1, 0);
 
             layout.Controls.Add(new Label { Text = "Nama", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 1);
             txtName = new TextBox { Dock = DockStyle.Fill };
@@ -98,7 +91,6 @@ namespace StockMaster
 
         private void BtnSave_Click(object? sender, EventArgs e)
         {
-            // ProductId = txtId?.Text;
             NameProduct = txtName?.Text;
             Category = txtQuantity?.Text;
             Price = txtPrice?.Text;
@@ -111,7 +103,6 @@ namespace StockMaster
         {
             base.OnShown(e);
 
-            // if (txtId != null) txtId.Text = ProductId ?? "";
             if (txtName != null) txtName.Text = NameProduct ?? "";
             if (txtQuantity != null) txtQuantity.Text = Category ?? "";
             if (txtPrice != null) txtPrice.Text = Price ?? "";

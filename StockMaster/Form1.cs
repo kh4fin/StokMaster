@@ -18,7 +18,8 @@ namespace StockMaster
 
         private void SetupUI()
         {
-            // Header
+            this.Text = "StockMaster";
+
             Panel header = new Panel
             {
                 Size = new Size(this.Width, 80),
@@ -27,7 +28,6 @@ namespace StockMaster
             };
             this.Controls.Add(header);
 
-            // Icon toko (kiri)
             PictureBox shopIcon = new PictureBox
             {
                 ImageLocation = "./assets/store.png",
@@ -37,7 +37,6 @@ namespace StockMaster
             };
             header.Controls.Add(shopIcon);
 
-            // Icon profile (kanan)
             PictureBox profileIcon = new PictureBox
             {
                 ImageLocation = "./assets/user_1.png",
@@ -48,7 +47,6 @@ namespace StockMaster
             };
             header.Controls.Add(profileIcon);
 
-            // FlowLayoutPanel untuk card
             FlowLayoutPanel panelCards = new FlowLayoutPanel
             {
                 Padding = new Padding(30),
@@ -86,13 +84,10 @@ namespace StockMaster
 
             this.Controls.Add(containerPanel);
 
-            // Card Inventory
             panelCards.Controls.Add(CreateCard("Inventory", Color.LightBlue, InventoryCard_Click));
 
-            // Card Product
             panelCards.Controls.Add(CreateCard("Product", Color.LightGreen, ProductCard_Click));
 
-            // Card Analysis
             panelCards.Controls.Add(CreateCard("Analysis", Color.LightCoral, AnalysisCard_Click));
         }
 

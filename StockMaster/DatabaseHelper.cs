@@ -131,34 +131,6 @@ public class DatabaseHelper
 
     // ====== INVENTORY ======
 
-    public static List<Inventory> GetInventory()
-    {
-        List<Inventory> inventories = new();
-
-        using (var conn = new SQLiteConnection($"Data Source={dbFile};Version=3;"))
-        {
-            conn.Open();
-            string sql = "SELECT * FROM inventory";
-            using (var cmd = new SQLiteCommand(sql, conn))
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    inventories.Add(new Inventory
-                    {
-                        InventoryId = Convert.ToInt32(reader["inventoryId"]),
-                        ProductId = Convert.ToInt32(reader["productId"]),
-                        Quantity = Convert.ToInt32(reader["quantity"]),
-                        Date = reader["date"].ToString(),
-                        Type = reader["type"].ToString()
-                    });
-                }
-            }
-        }
-
-        return inventories;
-    }
-
     public static void InsertInventory(Inventory i)
     {
         using (var conn = new SQLiteConnection($"Data Source={dbFile};Version=3;"))
@@ -209,7 +181,42 @@ public class DatabaseHelper
     }
 
     // ==== Model Join ====
-    
+
+    public static List<InventoryWithProduct> GetInventoryWithProduct()
+    {
+        List<InventoryWithProduct> list = new();
+
+        using (var conn = new SQLiteConnection($"Data Source={dbFile};Version=3;"))
+        {
+            conn.Open();
+            string sql = @"
+                SELECT i.inventoryId, p.productName, p.category, p.price, 
+                    i.quantity, i.date, i.type
+                FROM inventory i
+                JOIN products p ON i.productId = p.productId";
+
+            using (var cmd = new SQLiteCommand(sql, conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    list.Add(new InventoryWithProduct
+                    {
+                        InventoryId = Convert.ToInt32(reader["inventoryId"]),
+                        ProductName = reader["productName"].ToString(),
+                        Category = reader["category"].ToString(),
+                        Price = reader["price"] != DBNull.Value ? Convert.ToDouble(reader["price"]) : 0,
+                        Quantity = Convert.ToInt32(reader["quantity"]),
+                        Date = reader["date"].ToString(),
+                        Type = reader["type"].ToString()
+                    });
+                }
+            }
+        }
+
+        return list;
+    }
+
 
     // ==== Model Classes ====
 
@@ -225,6 +232,18 @@ public class DatabaseHelper
     {
         public int InventoryId { get; set; }
         public int ProductId { get; set; }
+        public int Quantity { get; set; }
+        public string? Date { get; set; }
+        public string? Type { get; set; }
+    }
+
+    public class InventoryWithProduct
+    {
+        public int InventoryId { get; set; }
+        public int ProductId { get; set; }
+        public string? ProductName { get; set; }
+        public string? Category { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
         public string? Date { get; set; }
         public string? Type { get; set; }

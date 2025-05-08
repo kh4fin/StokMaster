@@ -81,10 +81,12 @@ namespace StockMaster
             };
             layout.Controls.Add(dgv, 0, 1);
 
-            dgv?.Columns.Add("productId", "Product ID");
-            dgv?.Columns.Add("productName", "Product Name");
-            dgv?.Columns.Add("category", "Category");
-            dgv?.Columns.Add("price", "Price");
+            dgv.Columns.Add("indexId", "No"); 
+            dgv.Columns.Add("productId", "Product ID");  
+            dgv.Columns["productId"].Visible = false; 
+            dgv.Columns.Add("productName", "Product Name");
+            dgv.Columns.Add("category", "Category");
+            dgv.Columns.Add("price", "Price");
         }
 
         private Button CreateButton(string text, EventHandler onClick)
@@ -112,9 +114,10 @@ namespace StockMaster
             dgv?.Rows.Clear();
             var products = DatabaseHelper.GetProducts();
 
+            int index = 1;
             foreach (var p in products)
             {
-                dgv?.Rows.Add(p.ProductId, p.ProductName, p.Category, p.Price.ToString("N0"));
+                dgv?.Rows.Add(index++, p.ProductId, p.ProductName, p.Category, p.Price.ToString("N0"));
             }
         }
 
@@ -141,24 +144,28 @@ namespace StockMaster
                 var selectedRow = dgv.SelectedRows[0];
                 if (selectedRow != null)
                 {
-                    ProductFormDialog dialog = new ProductFormDialog
+                    string? productIdStr = selectedRow.Cells["productId"]?.Value?.ToString();
+                    if (int.TryParse(productIdStr, out int productId))
                     {
-                        // ProductId = selectedRow.Cells["productId"]?.Value?.ToString(),
-                        NameProduct = selectedRow.Cells["productName"]?.Value?.ToString(),
-                        Category = selectedRow.Cells["category"]?.Value?.ToString(),
-                        Price = selectedRow.Cells["price"]?.Value?.ToString()
-                    };
-
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        DatabaseHelper.UpdateProduct(new DatabaseHelper.Product
+                        ProductFormDialog dialog = new ProductFormDialog
                         {
-                            ProductName = dialog.NameProduct,
-                            Category = dialog.Category,
-                            Price = double.TryParse(dialog.Price, out double p) ? p : 0
-                        });
+                            NameProduct = selectedRow.Cells["productName"]?.Value?.ToString(),
+                            Category = selectedRow.Cells["category"]?.Value?.ToString(),
+                            Price = selectedRow.Cells["price"]?.Value?.ToString()
+                        };
 
-                        LoadData();
+                        if (dialog.ShowDialog() == DialogResult.OK)
+                        {
+                            DatabaseHelper.UpdateProduct(new DatabaseHelper.Product
+                            {
+                                ProductId = productId,  
+                                ProductName = dialog.NameProduct,
+                                Category = dialog.Category,
+                                Price = double.TryParse(dialog.Price, out double p) ? p : 0
+                            });
+
+                            LoadData();
+                        }
                     }
                 }
             }
@@ -167,6 +174,8 @@ namespace StockMaster
                 MessageBox.Show("Pilih satu baris yang mau diedit.");
             }
         }
+
+
 
         private void BtnDelete_Click(object? sender, EventArgs e)
         {

@@ -35,7 +35,6 @@ namespace StockMaster
             layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             this.Controls.Add(layout);
 
-            // Panel tombol
             Panel panelTop = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -53,7 +52,6 @@ namespace StockMaster
             };
             panelTop.Controls.Add(buttonPanel);
 
-            // Tombol
             Button btnAdd = CreateButton("Tambah", BtnAdd_Click);
             Button btnEdit = CreateButton("Edit", BtnEdit_Click);
             Button btnDelete = CreateButton("Hapus", BtnDelete_Click);
@@ -62,7 +60,6 @@ namespace StockMaster
             buttonPanel.Controls.Add(btnEdit);
             buttonPanel.Controls.Add(btnDelete);
 
-            // DataGridView
             dgv = new DataGridView
             {
                 Dock = DockStyle.Fill,
@@ -85,13 +82,18 @@ namespace StockMaster
                 }
             };
             layout.Controls.Add(dgv, 0, 1);
-
-            // Kolom tabel
+ 
+            dgv.Columns.Add("indexId", "No");
             dgv.Columns.Add("inventoryId", "Inventory ID");
+            dgv.Columns["inventoryId"].Visible = false;
             dgv.Columns.Add("productId", "Product ID");
+            dgv.Columns["productId"].Visible = false;
+            dgv.Columns.Add("productName", "Product Name");
             dgv.Columns.Add("quantity", "Quantity");
             dgv.Columns.Add("date", "Date");
             dgv.Columns.Add("type", "Type");
+
+
         }
 
         private Button CreateButton(string text, EventHandler onClick)
@@ -119,12 +121,14 @@ namespace StockMaster
             if (dgv == null) return;
             dgv.Rows.Clear();
 
-            List<DatabaseHelper.Inventory> list = DatabaseHelper.GetInventory();
+            List<DatabaseHelper.InventoryWithProduct> list = DatabaseHelper.GetInventoryWithProduct();
+            int index = 1;
             foreach (var inv in list)
             {
-                dgv.Rows.Add(inv.InventoryId, inv.ProductId, inv.Quantity, inv.Date, inv.Type);
+                dgv.Rows.Add(index++, inv.InventoryId, inv.ProductId, inv.ProductName, inv.Quantity, inv.Date, inv.Type);
             }
         }
+
 
         private void BtnAdd_Click(object? sender, EventArgs e)
         {

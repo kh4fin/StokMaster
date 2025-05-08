@@ -17,7 +17,6 @@ namespace StockMaster
 
         public InventoryFormDialog()
         {
-            // InitializeComponent();
             SetupUI();
         }
         public string? InventoryId { get; set; }
@@ -82,28 +81,23 @@ namespace StockMaster
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
             this.Controls.Add(layout);
 
-            // Product Dropdown
             layout.Controls.Add(new Label { Text = "Produk", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 0);
             comboBoxProduct = new ComboBox { Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList };
             layout.Controls.Add(comboBoxProduct, 1, 0);
 
-            // Quantity
             layout.Controls.Add(new Label { Text = "Jumlah", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 1);
             numericQuantity = new NumericUpDown { Dock = DockStyle.Fill, Minimum = 1, Maximum = 10000, Value = 1 };
             layout.Controls.Add(numericQuantity, 1, 1);
 
-            // Date
             layout.Controls.Add(new Label { Text = "Tanggal", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 2);
             dateTimePicker = new DateTimePicker { Dock = DockStyle.Fill, Format = DateTimePickerFormat.Short };
             layout.Controls.Add(dateTimePicker, 1, 2);
 
-            // Type (In/Out)
             layout.Controls.Add(new Label { Text = "Tipe", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 3);
             comboBoxType = new ComboBox { Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList };
             comboBoxType.Items.AddRange(new string[] { "In", "Out" });
             layout.Controls.Add(comboBoxType, 1, 3);
 
-            // Save Button
             buttonSave = new Button
             {
                 Text = "Simpan",
@@ -149,7 +143,6 @@ namespace StockMaster
                 if (comboBoxType != null)
                     comboBoxType.SelectedItem = inventoryData.Type;
 
-                // Set InventoryId (agar bisa dipakai saat edit)
                 InventoryId = inventoryData.InventoryId.ToString();
             }
         }
